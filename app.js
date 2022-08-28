@@ -7,7 +7,7 @@ const { signIn, signUp } = require('./middlewares/validation');
 const users = require('./routes/users');
 const movies = require('./routes/movies');
 
-// const auth = require('./middlewares/auth');
+const auth = require('./middlewares/auth');
 
 const { login, createUser } = require('./controllers/users');
 
@@ -19,24 +19,21 @@ const { PORT = 3000 } = process.env;
 
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/bitfilmsdb', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/moviesdb', { useNewUrlParser: true });
 app.use(express.json());
 
 app.use(cors());
 
 app.use(requestLogger);
 
-// app.use('/users', auth, users);
-// app.use('/movies', auth, movies);
-app.use('/users', users);
-app.use('/movies', movies);
+app.use('/users', auth, users);
+app.use('/movies', auth, movies);
 
-// app.post('/signin', signIn, login);
-// app.post('/signup', signUp, createUser);
+app.post('/signin', signIn, login);
+app.post('/signup', signUp, createUser);
 
 // запрос к несуществуюшему роуту
-// app.use('*', auth, (req, res, next) => {
-app.use('*', (req, res, next) => {
+app.use('*', auth, (req, res, next) => {
   next(new NotFoundError('Данной страницы не существует'));
 });
 

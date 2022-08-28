@@ -10,7 +10,7 @@ module.exports.getMovies = (req, res, next) => {
     .catch(next);
 };
 module.exports.createMovies = (req, res, next) => {
-  // const owner = req.user._id;
+  const owner = req.user._id;
   // console.log(owner);
   const {
     country,
@@ -37,7 +37,7 @@ module.exports.createMovies = (req, res, next) => {
     movieId,
     nameRU,
     nameEN,
-    // owner,
+    owner,
   })
     .then((movie) => res.send(movie))
     // .then((movie) => res.send({ data: movie }))
