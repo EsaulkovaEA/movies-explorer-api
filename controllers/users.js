@@ -59,6 +59,9 @@ module.exports.updateProfile = (req, res, next) => {
       if (err.name === 'CastError' || err.name === 'ValidationError') {
         return next(new BadRequestError('Переданы некорректные данные пользователя'));
       }
+      if (err.code === 11000) {
+        return next(new ConflictError('Такой пользователь уже есть в базе данных'));
+      }
       return next(err);
     });
 };
